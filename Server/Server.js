@@ -8,7 +8,7 @@ const getadvice = require('./Blackjackadvice.js');
 const hostname = '127.0.0.1';
 const port = 3000;
 
-//create server
+//create server fhdaf
 const server = http.createServer((req, res) => {
     //setup response headers
     res.statusCode = 200;
