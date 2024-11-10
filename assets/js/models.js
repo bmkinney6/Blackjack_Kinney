@@ -252,7 +252,7 @@ var blackjack = {
             getPlayer_money(this.player.userWallet.value); //show the new value
             gamePlay.NewRound();
             return true;
-        } else if(this.dealer.getScore() === this.player.getScore()){
+        } else if(this.dealer.getScore() === this.player.userhand.getScore()){
             addMessage("Push! Wait for board to clear to play again!")
             gamePlay.outcome = "Push";
             gamePlay.NewRound();

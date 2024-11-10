@@ -1,3 +1,4 @@
+//cd Desktop/Fall\ 2024/Web\ Apps\ /Blackjack_Kinney/Server
 //load HTTP module
 const http = require('http');
 const url = require('url');
@@ -24,15 +25,17 @@ const server = http.createServer((req, res) => {
     const dealerscore = parseInt(parsedUrl.query.dealerscore, 10);
 
     //create call back function to format output
-    let myfunc = function(userscore, dealerscore, advice) {
-        res.end(JSON.stringify( {
-            "status": "Success",
-            "content": {
-            "User's Score": userscore,
-            "Dealer's Score": dealerscore,
-            "Advice": advice
-            }
-        }));
+    let myfunc = function(advice) {
+        if (!res.writableEnded) {
+            res.end(JSON.stringify({
+                "status": "Success",
+                "content": {
+                    "User's Score": userscore,
+                    "Dealer's Score": dealerscore,
+                    "Advice": advice
+                }
+            }));
+        }
     };
     //get advice
     getadvice.generateAdvice(userscore, dealerscore, myfunc);

@@ -39,10 +39,49 @@ function generateAdvice (userScore, dealerScore, callbackFn) {
         move = "Hit"
     }
 
-    callbackFn(userScore, dealerScore, move); //call the callback function with the correct move
+    callbackFn(move); //call the callback function with the correct move
 }
-function generateRecord(outcome, callbackFn) {
 
+//Records and increments counter each time a quote is served
+function countQuotes(result, callbackfn) {
+    //include file handler
+    const fs = require('fs');
+    //setup file path
+    const path = './result.txt';
+    //initialize counter for all results
+    let win = 0;
+    let loss = 0;
+    let push = 0;
+    let mycallback = function(err, data) {
+        //if there's an error
+        if (err) {
+            console.error(err);
+            //create a file by writing to it
+            fs.writeFile(path, count, function(err, data) {
+                if (err) {
+                    console.error(err);
+                    quoteData['served'] = count;
+                    callbackfn(quoteData);
+                }
+            });
+            return count;
+        }
+        //increment counter
+        count = Number(data) + 1;
+        fs.writeFile(path, count.toString(), function(err, data) {
+            //if there's an error, log it in response
+            if (err) {
+                console.error(err);
+                quoteData['error'] = "Error occured";
+                callbackfn(quoteData);
+            }
+        });
+        //update response
+        quoteData['served'] = count;
+        callbackfn(quoteData);
+    }
+    //read file
+    fs.readFile(path, mycallback);
 }
 
 
