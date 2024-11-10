@@ -1,0 +1,282 @@
+/*card deck image modified from https://www.vector4free.com*/
+
+html, body {
+    background-color: #669bbc;
+    height: 100vh;
+}
+
+.gameplay {
+    display: flex;
+    justify-content: space-evenly;
+}
+.card_deck {
+    background: url("../img/carddeck.png");
+    height: 215px;
+    width: 150px;
+    border: 1px solid #666;
+    border-radius: 8px;
+}
+
+/*
+------------------------------------Form styling------------------------------------------
+ */
+
+.FormTitle, .data {
+    display: block;
+}
+.data {
+    text-align: center;
+}
+label, input {
+    font-size: 25px;
+    color: white;
+}
+
+input {
+    background-color: #669bbc;
+    border: 2px solid white;
+    border-radius: 8px;
+}
+/*
+----------------------------------------LEFT BOARD ELEMENT STYLING -----------------------------
+ */
+.left_board {
+    width: 25%;
+    height: 100vh;
+}
+
+.money_container {
+    width: 70%;
+    height: 90%;
+    border: 4px solid white;
+    border-radius: 8px;
+    flex-shrink: 0;
+    margin: 20px auto;
+}
+
+#chips {
+    margin-left: 10px;
+    width: 21%;
+    height: auto;
+}
+
+.betDecrement, .betIncrement, .dealButton, .playagain, .resetButton{
+    color: white;
+    margin: auto auto;
+    font-size: 75px;
+    text-align: center;
+}
+
+.dealButton, .playagain, .resetButton{
+    margin-top: 50px;
+}
+
+.player_money, .BetAmount {
+    color: white;
+    margin: auto auto;
+    margin-left: 20px;
+    font-size: 40px;
+}
+.request_button {
+    background-color: #669bbc;
+    border-color: white;
+    color: white;
+    border: 4px solid white;
+    border-radius: 8px;
+    width: 50%;
+    height: 75px;
+    display: block;
+    margin: 10px auto 0 auto;
+    font-size: 16px;
+}
+
+/*
+------------------------------------------- MIDDLE BOARD ELEMENT STYLING --------------------
+ */
+.middle_board {
+    height: 100vh;
+    width: 50%;
+    flex-grow: 1;
+}
+
+.Dealer_mat{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 217px;
+    border: 4px solid white;
+    border-radius: 8px;
+    margin: 20px auto;
+}
+
+.title, .FormTitle{
+    color: white;
+    font-size: 75px;
+    text-align: center;
+    margin: 20px auto 20px auto;
+}
+
+.description, .button_font, .usernameDiv, .cards_left {
+    color: white;
+    font-size: 40px;
+    text-align: center;
+}
+
+.player_mat_container {
+    /*background-color: #666666;*/
+    margin: 0px auto;
+    width: 100%;
+    height: 28%;
+}
+
+.player_mat {
+    display: flex;
+    justify-content: center;
+    height: 217px;
+    width: 100%;
+    background-color: #669bbc;
+    border: 4px solid white;
+    border-radius: 8px;
+}
+.player_mat_text,.dealer_mat_text {
+    color: white;
+    font-size: 40px;
+    opacity: 0.6;
+    margin: auto auto;
+    text-align: center;
+}
+
+.button_container {
+    margin: 0px auto;
+    padding-top: 20px;
+    width: 50%;
+    height: 10%;
+    display: flex;
+    justify-content: space-between;
+}
+
+/*
+-----------------------------------------------RIGHT BOARD ELEMENT STYLING---------------------------------------
+ */
+.right_board {
+    width: 25%;
+    height: 100vh;
+    flex-shrink: 0;
+}
+
+.dealer {
+    margin: 20px auto;
+}
+
+/*.messagediv {*/
+/*    width: 70%;*/
+/*    height: 30%;*/
+/*    border: 4px solid white;*/
+/*    border-radius: 8px;*/
+/*    overflow-y: auto;*/
+/*    line-height: 1.5;*/
+/*    display: flex;*/
+/*    flex-direction: column-reverse;*/
+/*    justify-content: flex-start;*/
+/*    margin: 20px auto;*/
+/*    color: white;*/
+/*    font-size: 20px;*/
+/*}*/
+.messagediv {
+    width: 70%;                  /* Adjust the width */
+    height: 30%;                 /* Adjust the height */
+    border: 4px solid white;
+    border-radius: 8px;/* Add a border */
+    overflow-y: auto;              /* Enable vertical scrolling */
+    font-size: 20px;               /* Adjust font size */
+    display: flex;                 /* Flexbox layout */
+    flex-direction: column; /* Reverse column order to show new messages at the top */
+    justify-content: flex-start;
+    color: white;
+    margin: 20px auto;
+}
+
+/* Style for individual messages */
+#messagediv span {
+    display: block; /* Each message appears on a new line */
+    margin-bottom: 15px;
+    word-wrap: break-word;
+}
+
+
+#facedown, #facedowncard {background-position: -2154px -4px;
+}
+
+#D2 {background-position: -2px -2px;}
+#D3 {background-position: -168px -2px;}
+#D4 {background-position: -332px -2px;}
+#D5 {background-position: -496px -2px;}
+#D6 {background-position: -661px -2px;}
+#D7 {background-position: -825px -2px;}
+#D8 {background-position: -990px -2px;}
+#D9 {background-position: -1155px -2px;}
+#D10 {background-position: -1320px -3px;}
+#D11 {background-position: -1483px -3px;}
+#D12 {background-position: -1648px -4px;}
+#D13 {background-position: -1812px -4px;}
+#D1 {background-position: -1978px -4px;}
+
+#C2 {background-position: -232px -232px;}
+#C3 {background-position: -168px -232px;}
+#C4 {background-position: -332px -232px;}
+#C5 {background-position: -496px -232px;}
+#C6 {background-position: -661px -232px;}
+#C7 {background-position: -825px -232px;}
+#C8 {background-position: -990px -232px;}
+#C9 {background-position: -1155px -232px;}
+#C10 {background-position: -1320px -233px;}
+#C11 {background-position: -1484px -234px;}
+#C12 {background-position: -1647px -233px;}
+#C13 {background-position: -1812px -234px;}
+#C1 {background-position: -1978px -234px;}
+
+#H2 {background-position: -464px -464px;}
+#H3 {background-position: -168px -464px;}
+#H4 {background-position: -332px -464px;}
+#H5 {background-position: -496px -464px;}
+#H6 {background-position: -661px -464px;}
+#H7 {background-position: -825px -464px;}
+#H8 {background-position: -990px -464px;}
+#H9 {background-position: -1155px -464px;}
+#H10 {background-position: -1320px -464px;}
+#H11 {background-position: -1483px -464px;}
+#H12 {background-position: -1648px -464px;}
+#H13 {background-position: -1812px -464px;}
+#H1 {background-position: -1978px -464px;}
+
+
+#S2 {background-position: -2px -695px;}
+#S3 {background-position: -168px -695px;}
+#S4 {background-position: -332px -695px;}
+#S5 {background-position: -498px -695px;}
+#S6 {background-position: -661px -695px;}
+#S7 {background-position: -825px -695px;}
+#S8 {background-position: -990px -695px;}
+#S9 {background-position: -1156px -695px;}
+#S10 {background-position: -1320px -695px;}
+#S11 {background-position: -1483px -694px;}
+#S12 {background-position: -1648px -694px;}
+#S13 {background-position: -1812px -694px;}
+#S1 {background-position: -1978px -695px;}
+
+#C2 {
+    background-position: -3px -232px;
+}
+
+#C3 {
+    background-position: -168px -232px;
+}
+
+#H2 {
+    background-position: -2px -464px;
+}
+
+#C8 {
+    background-position: -990px -695px;
+}
+

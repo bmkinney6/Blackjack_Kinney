@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/Blackjack_Kinney.iml" filepath="$PROJECT_DIR$/.idea/Blackjack_Kinney.iml" />
+      <module fileurl="file://$USER_HOME$/Downloads/NodeExamples/.idea/NodeExamples.iml" filepath="$USER_HOME$/Downloads/NodeExamples/.idea/NodeExamples.iml" />
+    </modules>
+  </component>
+</project>
