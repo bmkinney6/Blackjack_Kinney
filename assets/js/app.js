@@ -83,7 +83,7 @@ var gamePlay = {
         // Start a new game
         this.playGame();
     },
-    reportOutcome: function(outcome) {
+    reportOutcome: function() {
         const result = gamePlay.outcome;
         const url = `http://127.0.0.1:3000/?outcome=${result}`;
 

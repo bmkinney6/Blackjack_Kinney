@@ -272,6 +272,7 @@ var blackjack = {
         //get scores so they can be sent to the server for advice
         const userScore = blackjack.player.userhand.getScore();
         const dealerScore = blackjack.dealer.cards[1].getValue();
+        //get url for the server, and take correct parameters
         const url = `http://127.0.0.1:3000/?userscore=${userScore}&dealerscore=${dealerScore}`;
 
         if(type==='XML') {

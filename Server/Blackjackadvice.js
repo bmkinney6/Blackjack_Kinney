@@ -10,11 +10,9 @@ function generateAdvice (userScore, dealerScore, callbackFn) {
 
     let move = "Hit" //initialize move variable for later use in getting advice
     if (!isUserScoreValid && !isDealerScoreValid) {
-        // Both scores are invalid
-        callbackFn(null, null, "Invalid scores provided");
-
+        // Both scores are invalid, call the callback function with the error
+        callbackFn("Invalid scores provided");
     }
-
     if (!isUserScoreValid) {
         // If user score is invalid, set it to 14 by default
         userScore = 14;
@@ -43,92 +41,54 @@ function generateAdvice (userScore, dealerScore, callbackFn) {
 }
 
 //Records and increments counter each time a quote is served
-function countQuotes(result, callbackfn) {
-    //include file handler
+function recordOutcome(result, callbackfn) {
+    // Include file handler
     const fs = require('fs');
-    //setup file path
-    const path = './result.txt';
-    //initialize counter for all results
-    let win = 0;
-    let loss = 0;
-    let push = 0;
-    let mycallback = function(err, data) {
-        //if there's an error
-        if (err) {
-            console.error(err);
-            //create a file by writing to it
-            fs.writeFile(path, count, function(err, data) {
-                if (err) {
-                    console.error(err);
-                    quoteData['served'] = count;
-                    callbackfn(quoteData);
-                }
-            });
-            return count;
+    // Set up file path
+    const path = './gameResults.json';
+    // Initialize stats object with default values
+    let stats = { wins: 0, losses: 0, pushes: 0 };
+
+    // Read the JSON file to get the current stats
+    fs.readFile(path, 'utf8', (err, data) => {
+        if (!err && data) {
+            try {
+                // Parse the JSON data if the file exists and has content
+                stats = JSON.parse(data);
+            } catch (parseErr) {
+                console.error("Error parsing JSON data:", parseErr);
+                return callbackfn({ status: "Error", message: "Invalid JSON data" });
+            }
+        } else if (err && err.code !== 'ENOENT') {
+            // If there's an error other than file not found, return an error
+            return callbackfn({ status: "Error", message: "Could not read file" });
         }
-        //increment counter
-        count = Number(data) + 1;
-        fs.writeFile(path, count.toString(), function(err, data) {
-            //if there's an error, log it in response
-            if (err) {
-                console.error(err);
-                quoteData['error'] = "Error occured";
-                callbackfn(quoteData);
+
+        // Increment the appropriate outcome counter based on the result
+        if (result === 'Win') stats.wins++;
+        else if (result === 'Loss') stats.losses++;
+        else if (result === 'Push') stats.pushes++;
+        else {
+            // Return an error for invalid result values
+            return callbackfn({ status: "Error", message: "Invalid result value" });
+        }
+
+        // Write the updated stats back to the JSON file
+        fs.writeFile(path, JSON.stringify(stats, null, 2), (writeErr) => {
+            if (writeErr) {
+                console.error("Error writing to file:", writeErr);
+                return callbackfn({ status: "Error", message: "Could not update stats" });
             }
         });
-        //update response
-        quoteData['served'] = count;
-        callbackfn(quoteData);
-    }
-    //read file
-    fs.readFile(path, mycallback);
+    });
+    // Return the updated stats in the callback
+    callbackfn({
+        status: "Success",
+        content: stats
+    });
 }
 
 
-module.exports = {generateAdvice};
+module.exports = {generateAdvice, recordOutcome};
 
 
-
-
-
-
-
-//Records and increments counter each time a quote is served
-function countQuotes(quoteData, callbackfn) {
-    //include file handler
-    const fs = require('fs');
-    //setup file path
-    const path = './count.txt';
-    //initialize counter
-    let count = 1;
-    let mycallback = function(err, data) {
-        //if there's an error
-        if (err) {
-            console.error(err);
-            //create a file by writing to it
-            fs.writeFile(path, count, function(err, data) {
-                if (err) {
-                    console.error(err);
-                    quoteData['served'] = count;
-                    callbackfn(quoteData);
-                }
-            });
-            return count;
-        }
-        //increment counter
-        count = Number(data) + 1;
-        fs.writeFile(path, count.toString(), function(err, data) {
-            //if there's an error, log it in response
-            if (err) {
-                console.error(err);
-                quoteData['error'] = "Error occured";
-                callbackfn(quoteData);
-            }
-        });
-        //update response
-        quoteData['served'] = count;
-        callbackfn(quoteData);
-    }
-    //read file
-    fs.readFile(path, mycallback);
-}
