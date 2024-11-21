@@ -1,5 +1,17 @@
 /*card deck image modified from https://www.vector4free.com*/
 
+/*
+-----------------------------Index styling--------------------
+ */
+#BoardTitle {
+    color: white;
+    font-size: 40px;
+    border-bottom: 2px solid white;
+    width: fit-content;
+    margin: 20px auto 0 auto;
+
+}
+
 html, body {
     background-color: #669bbc;
     height: 100vh;
@@ -15,6 +27,15 @@ html, body {
     width: 150px;
     border: 1px solid #666;
     border-radius: 8px;
+}
+
+#LeaderBoard {
+    width: 50%;
+    height: 60%;
+    border: 3px solid white;
+    border-radius: 8px;
+    margin: 20px auto 0 auto;
+
 }
 
 /*

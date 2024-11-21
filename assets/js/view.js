@@ -39,6 +39,23 @@ function addMessage(msg, type) {
     // Scroll to the top to ensure the latest message is visible (if auto-scrolling is desired)
     messageDiv.scrollTop = 0;
 }
+//adds message to the message board
+function addScore(username, score, type) {
+    var messageDiv = document.getElementById("LeaderBoard"); //access the message div in html
+
+    // Create a new span for the message
+    var messageSpan = document.createElement('span');
+    messageSpan.className = 'message ' + type; // Set a class depending on the message type
+    messageSpan.innerHTML = "Username: "+username+"     Score: "+score;
+
+    // Prepend the message span to the message div so it appears at the top
+    if (messageDiv !== null) {
+        messageDiv.insertBefore(messageSpan, messageDiv.firstChild);  // With flex-direction: column, this shows at the top
+    }
+
+    // Scroll to the top to ensure the latest message is visible (if auto-scrolling is desired)
+    messageDiv.scrollTop = 0;
+}
 
 //clearMessages – Removes all messages from the message div.
 function clearMessages() {
