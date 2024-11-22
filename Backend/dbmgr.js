@@ -94,6 +94,7 @@ exports.findAll = function (limit,callbackFn) {
                     console.log("Results");
                     console.log(results);
                     db.close();
+                    return results; //return the results
                 })
         })
         .catch(function (err) {

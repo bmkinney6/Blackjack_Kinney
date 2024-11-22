@@ -40,7 +40,7 @@ function addMessage(msg, type) {
     messageDiv.scrollTop = 0;
 }
 //adds message to the message board
-function addScore(username, score, type) {
+function addScore(username, score, type="default") {
     var messageDiv = document.getElementById("LeaderBoard"); //access the message div in html
 
     // Create a new span for the message
@@ -71,6 +71,9 @@ function setUsername(userName) {
     if (usernameDiv !== null) {
         usernameDiv.innerHTML = "User: "+userName; // Set the username
     }
+    $.post("http://localhost:3000/username", {username: userName}, function(result) {
+        console.log(result)
+    });
 }
 
 // Resets the game view (e.g., the game board)

@@ -20,9 +20,9 @@ var gamePlay = {
         this.username = this.getUsername();
         setUsername(this.username); //display the username
         //make post request to username to add username and initialized score
-        $.post("http://localhost:3000/username", {username: this.username}, function(result) {
-            console.log(result)
-        });
+        // $.post("http://localhost:3000/username", {username: this.username}, function(result) {
+        //     console.log(result)
+        // });
         getPlayer_money(this.Blackjack.player.userWallet.getValue()); //display the initial bank value
         showCardsLeft(this.Blackjack.carddeck.getNumCardsLeft()); //show initial cards left
         updateBet(this.Blackjack.player.userBet) //display the minimum bet value of 100

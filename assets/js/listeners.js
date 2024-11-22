@@ -6,15 +6,6 @@
 var gameInPlay = false; //initialize to false because user hasn't started game when js loads
 var newgame = true //initialize new game to true
 
-// document.addEventListener("DOMContentLoaded", function() {
-//     // Check if the current page is gameplay.html
-//     if (window.location.pathname === '/gameplay.html') {
-//         $.post("http://localhost:3000/username", {username: this.username}, function(result) {
-//             console.log(result);
-//         });
-//     }
-// });
-
 document.getElementById("reset").addEventListener("click", function() {
     gamePlay.reset();//resets the game
     card_deck.resetDiscard(); //resets discard pile

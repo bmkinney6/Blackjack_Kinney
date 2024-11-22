@@ -112,18 +112,35 @@ router.get('/player2', function (req, res) {
      */
 });
 
+// router.get('/highscores', function (req, res) {
+//     //respond with a jscon object containing a list of usernames and highscores
+//     console.log("requesting high scores: ")
+//     mydb.findAll(10)
+//         .then(data=> {
+//             console.log(data)
+//             res.json(data);
+//         })
+//         .catch((err) =>{
+//             res.send(err);
+//         }); //get top 10 scores
+//     //will be used to display in index.html. (on load trigger with index.html)
+//
+// });
 router.get('/highscores', function (req, res) {
-    //respond with a jscon object containing a list of usernames and highscores
-    console.log("requesting high scores: ")
+    console.log("Requesting high scores...");
     mydb.findAll(10)
-        .then((data)=> {
-            res.json(data);
+        .then(data => {
+            if (!data || data.length === 0) {
+                console.log("No data found.");
+                return res.status(404).json({ error: "No high scores found" });
+            }
+            console.log("High scores:", data);
+            return res.json(data);
         })
-        .catch((err) =>{
-            res.send(err);
-        }); //get top 10 scores
-    //will be used to display in index.html. (on load trigger with index.html)
-
+        .catch(err => {
+            console.error("Error retrieving high scores:", err);
+            res.status(500).send("Error retrieving high scores.");
+        });
 });
 
 
