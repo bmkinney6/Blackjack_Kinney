@@ -66,8 +66,8 @@ html, body {
 }
 
 
-------------------------------------Form styling------------------------------------------
- */
+/*------------------------------------Form styling------------------------------------------*/
+
 
 .FormTitle, .data {
     display: block;
@@ -127,7 +127,6 @@ input {
 }
 .request_button {
     background-color: #669bbc;
-    border-color: white;
     color: white;
     border: 4px solid white;
     border-radius: 8px;

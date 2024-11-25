@@ -37,8 +37,8 @@ router.post('/username', function (req, res) {
         .catch((err) => {
             // Handle errors other than the username existing
             if (err !== "Username already exists.") {
-                console.error("Error:", err);
-                res.status(500).send("An error occurred while processing the request.");
+                console.error("Error:", err); //log the error
+                res.status(500).send("An error occurred while processing the request."); //respond with the roor
             }
         });
 });
@@ -50,16 +50,15 @@ router.get('/player1', function (req, res) {
 
     if (status === 'gameover') {
         // Check if username exists in the database
-        mydb.findRec({ username })
-            .then((record) => {
-                if (!record) {
-                    // Handle case where user doesn't exist
+        mydb.findRec({ username })//passes in username object from variables above
+            .then((record) => { //take the record(if exists) and see if the high score is better
+                if (!record) { //error handling if no record is found
                     console.log("Username not found in the database.");
-                    return Promise.reject("User does not exist.");
+                    return Promise.reject("User does not exist."); //reject the promise because no user found
                 }
 
                 const currentHighScore = record.score || 0; // Use 0 if no score exists
-                console.log("Current high score:", currentHighScore, "My current score:", p1_games);
+                console.log("Current high score:", currentHighScore, "My current score:", p1_games); //display scores in terminal
 
                 // Update high score if p1_games is higher
                 if (p1_games > currentHighScore) {
@@ -67,13 +66,10 @@ router.get('/player1', function (req, res) {
                     return mydb.updateData({ username }, { score: p1_games });
                 } else {
                     console.log("Score is not a high score. No update required.");
-                    return Promise.resolve(); // Graceful exit
+                    return Promise.resolve(); // return the promise with nothing done
                 }
             })
             .then(() => {
-                if (p1_games > 0) {
-                    console.log("Score successfully updated or no changes made.");
-                }
                 p1_games = 0; // Reset games counter only after successful processing
                 console.log("Games played counter reset.");
             })
@@ -81,7 +77,7 @@ router.get('/player1', function (req, res) {
                 console.error("Error during gameover processing:", err);
             });
     } else {
-        // Increment games played count for non-gameover status
+        // Increment games played count if the game is not over
         p1_games++;
         console.log("Incremented games played:", p1_games);
     }
@@ -128,14 +124,14 @@ router.get('/player2', function (req, res) {
 // });
 router.get('/highscores', function (req, res) {
     console.log("Requesting high scores...");
-    mydb.findAll(10)
-        .then(data => {
-            if (!data || data.length === 0) {
+    mydb.findAll(10)//find all of the highscores
+        .then(data => { //take the data in the DB and send response
+            if (!data || data.length === 0) { //return error if no data is in DB
                 console.log("No data found.");
                 return res.status(404).json({ error: "No high scores found" });
             }
             console.log("High scores:", data);
-            return res.json(data);
+            return res.json(data); //return the data as a JSON Object
         })
         .catch(err => {
             console.error("Error retrieving high scores:", err);
