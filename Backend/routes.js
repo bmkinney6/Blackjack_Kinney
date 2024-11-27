@@ -8,7 +8,7 @@ var mydb = require('./dbmgr.js');
 
 //use the url module
 const url = require('url');
-const {findRec} = require("./dbmgr");
+const {findRec, insertRec} = require("./dbmgr");
 
 //test variables
 var a = 0;
@@ -21,26 +21,31 @@ var p2_games = 0;
 //BLACKJACK ROUTES
 router.post('/username', function (req, res) {
     console.log("Request body username:", req.body.username);
-    mydb
-        .findRec(req.body)//find record of the body (returns the result)
-        .then((result) => { //if the return is null, I know that I can insert the data.
-            if (result) {
-                // If username exists, reject the promise with the message
-                console.log("Username already exists.");
-                return Promise.reject("Username already exists."); // Stop further execution
-            }
-        })
-        .then(()=> {
-            // If username doesn't exist, proceed to insert the record
-            return mydb.insertRec(req.body);
-        })
-        .catch((err) => {
-            // Handle errors other than the username existing
-            if (err !== "Username already exists.") {
-                console.error("Error:", err); //log the error
-                res.status(500).send("An error occurred while processing the request."); //respond with the roor
-            }
-        });
+
+    // Call findRec with a callback function
+    mydb.findRec({ username: req.body.username }, function(err, result) {
+        if (err) {
+            // Handle error, e.g., connection failure or other DB issues
+            res.status(500).json({ message: "Error finding user", error: err });
+        } else if (result) {
+            // If result is found, respond with the user data
+            console.log("User Found. No need to create new user.")
+            res.json({ message: "User found", data: result });
+        } else {
+            // If no user found, insert a new user record
+            mydb.insertRec({ username: req.body.username }, function(err, result) {
+                if (err) {
+                    // Handle insertion error
+                    console.log("Error inserting user.")
+                    res.status(500).json({ message: "Error inserting user", error: err });
+                } else {
+                    // Successfully inserted the new user
+                    console.log("User inserted.")
+                    res.json({ message: "User inserted", data: result });
+                }
+            });
+        }
+    });
 });
 
 
@@ -49,33 +54,90 @@ router.get('/player1', function (req, res) {
     console.log("Received request:", { username, status, wallet });
 
     if (status === 'gameover') {
-        // Check if username exists in the database
-        mydb.findRec({ username })//passes in username object from variables above
-            .then((record) => { //take the record(if exists) and see if the high score is better
-                if (!record) { //error handling if no record is found
-                    console.log("Username not found in the database.");
-                    return Promise.reject("User does not exist."); //reject the promise because no user found
-                }
-
-                const currentHighScore = record.score || 0; // Use 0 if no score exists
-                console.log("Current high score:", currentHighScore, "My current score:", p1_games); //display scores in terminal
-
-                // Update high score if p1_games is higher
-                if (p1_games > currentHighScore) {
+        var p1_score = p1_games;
+        p1_games = 0;
+        mydb.findRec({username}, function(err, result) {
+            if (err) {
+                // Handle error, e.g., connection failure or other DB issues
+                res.status(500).json({ message: "Error finding user", error: err });
+            } else if (!result) {
+                // If no result is found, add user to the database and set their highscore to their score
+                console.log("Username not found in the database. Adding user now!");
+                mydb.insertRec({username, score: p1_score}, function(err, result) {
+                    if (err) {
+                        res.status(500).json({ message: "Error inserting user", error: err });
+                    }
+                    console.log("User inserted! ", result);
+                })
+            } else {//compare scores and update score if necessary
+                const currentHighScore = result.score || 0; // Use 0 if no score exists
+                console.log("Current high score:", currentHighScore, "My current score:", p1_score); //display scores in terminal
+                if (p1_score > currentHighScore) {
                     console.log("New high score! Updating...");
-                    return mydb.updateData({ username }, { score: p1_games });
+                    mydb.updateData({ username }, { score: p1_score }, function(err, result) {
+                        if (err) {
+                            console.log("error updating data: ", err);
+                        }
+                        else {
+                            console.log("data updated: ", result);
+                        }
+                    });
                 } else {
-                    console.log("Score is not a high score. No update required.");
-                    return Promise.resolve(); // return the promise with nothing done
+                    console.log("No high score. No need to Update!");
                 }
-            })
-            .then(() => {
-                p1_games = 0; // Reset games counter only after successful processing
-                console.log("Games played counter reset.");
-            })
-            .catch((err) => {
-                console.error("Error during gameover processing:", err);
-            });
+            }
+        });
+
+    } else {
+        // Increment games played count if the game is not over
+        p1_games++;
+        console.log("Incremented games played:", p1_games);
+    }
+
+    // Send response back
+    console.log("Player1 games played:", p1_games);
+    res.send("Request processed.");
+});
+
+router.get('/player2', function (req, res) {
+    const { username, status, wallet } = req.query;
+    console.log("Received request:", { username, status, wallet });
+
+    if (status === 'gameover') {
+        var p1_score = p1_games;
+        p1_games = 0;
+        mydb.findRec({username}, function(err, result) {
+            if (err) {
+                // Handle error, e.g., connection failure or other DB issues
+                res.status(500).json({ message: "Error finding user", error: err });
+            } else if (!result) {
+                // If no result is found, add user to the database and set their highscore to their score
+                console.log("Username not found in the database. Adding user now!");
+                mydb.insertRec({username, score: p1_score}, function(err, result) {
+                    if (err) {
+                        res.status(500).json({ message: "Error inserting user", error: err });
+                    }
+                    console.log("User inserted! ", result);
+                })
+            } else {//compare scores and update score if necessary
+                const currentHighScore = result.score || 0; // Use 0 if no score exists
+                console.log("Current high score:", currentHighScore, "My current score:", p1_score); //display scores in terminal
+                if (p1_score > currentHighScore) {
+                    console.log("New high score! Updating...");
+                    mydb.updateData({ username }, { score: p1_score }, function(err, result) {
+                        if (err) {
+                            console.log("error updating data: ", err);
+                        }
+                        else {
+                            console.log("data updated: ", result);
+                        }
+                    });
+                } else {
+                    console.log("No high score. No need to Update!");
+                }
+            }
+        });
+
     } else {
         // Increment games played count if the game is not over
         p1_games++;
@@ -88,57 +150,16 @@ router.get('/player1', function (req, res) {
 });
 
 
-    //count number of rounds played. (reset number after running out of money or resetting the game ->change status to gameover)
-    /*
-    if gameover:
-        - check if the user is in the database (add thm if not)
-        - check if they have a better score(most number of rounds played)
-        - update the user's score if the current score is better
-     */
-
-
-router.get('/player2', function (req, res) {
-    //accept first name, round-status(win,loss,push, gameover), and wallet amount
-    //count number of rounds played. (reset number after running out of money or resetting the game ->change status to gameover)
-    /*
-    if gameover:
-        - check if the user is in the database (add thm if not)
-        - check if they have a better score(most number of rounds played)
-        - update the user's score if the current score is better
-     */
-});
-
-// router.get('/highscores', function (req, res) {
-//     //respond with a jscon object containing a list of usernames and highscores
-//     console.log("requesting high scores: ")
-//     mydb.findAll(10)
-//         .then(data=> {
-//             console.log(data)
-//             res.json(data);
-//         })
-//         .catch((err) =>{
-//             res.send(err);
-//         }); //get top 10 scores
-//     //will be used to display in index.html. (on load trigger with index.html)
-//
-// });
 router.get('/highscores', function (req, res) {
     console.log("Requesting high scores...");
-    mydb.findAll(10)//find all of the highscores
-        .then(data => { //take the data in the DB and send response
-            if (!data || data.length === 0) { //return error if no data is in DB
-                console.log("No data found.");
-                return res.status(404).json({ error: "No high scores found" });
-            }
-            console.log("High scores:", data);
-            return res.json(data); //return the data as a JSON Object
-        })
-        .catch(err => {
-            console.error("Error retrieving high scores:", err);
-            res.status(500).send("Error retrieving high scores.");
-        });
+    mydb.findAll(10, function (err, result){
+        if (err) {
+            res.status(500).json({ message: "Error finding user", error: err });
+        }
+        console.log("High scores:", result);
+        res.json(result); //return the data as a JSON Object
+    })
 });
-
 
 
 //Demo / route to print hello

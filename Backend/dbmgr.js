@@ -64,41 +64,45 @@ exports.insertRec = function (myobj) {
 };
 
 //finds a single record with information contained in data
-//added a return so that I can use it in my promise for /username validation in routes.js
 exports.findRec = function (data, callbackFn) {
-    return myMongoClient.connect(url)
+    myMongoClient.connect(url)
         .then(db => {
             var dbo = db.db(myDB);
-            return dbo.collection(mycollection).findOne(data)
-                .then(results=>{
-                    console.log("Results");
-                    console.log(results);
+            dbo.collection(mycollection).findOne(data)
+                .then(results => {
+                    console.log("Results:", results);
                     db.close();
-                    return results; //return the results from the search
-
+                    // Call the callback function with null error and the result
+                    callbackFn(null, results);  // First argument is for error, second for result
                 })
+                .catch(err => {
+                    db.close();
+                    // Call the callback function with the error
+                    callbackFn(err, null);  // First argument is for error
+                });
         })
-        .catch(function (err) {
-            console.log("error: ", err);
-            return Promise.reject(err); //reject promise since error was thrown
-        })
+        .catch(err => {
+            // Handle the error in case of connection failure
+            callbackFn(err, null);  // First argument is for error
+        });
 };
+
 
 //finds all records using a limit (if limit is 0 all records are returned)
 exports.findAll = function (limit,callbackFn) {
-    return myMongoClient.connect(url)
+    myMongoClient.connect(url)
         .then(db => {
             var dbo = db.db(myDB);
-            return dbo.collection(mycollection).find({}).sort({ score: -1 }).limit(limit).toArray()
+            dbo.collection(mycollection).find({}).limit(0).toArray()
                 .then(results=>{
                     console.log("Results");
                     console.log(results);
                     db.close();
-                    return results; //return the results
+                    callbackFn(null, results);
                 })
         })
         .catch(function (err) {
-            return Promise.reject("Err: ", err);
+            throw err;
         })
 };
 
