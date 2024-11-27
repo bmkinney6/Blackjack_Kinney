@@ -91,7 +91,7 @@ var gamePlay = {
     },
     reportOutcome: function() {
         const result = gamePlay.outcome;
-        const url = `http://127.0.0.1:3000/player1?username=${this.username}&status=${result}&wallet=${this.Blackjack.player.userWallet.value}`;
+        const url = `http://127.0.0.1:3000/player2?username=${this.username}&status=${result}&wallet=${this.Blackjack.player.userWallet.value}`;
 
         $.get(url, function(data) {
             console.log(data)
