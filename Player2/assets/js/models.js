@@ -203,6 +203,7 @@ var blackjack = {
         showDealerCard(this.dealer, true); //second card always dealt face down (will flip later)
         showCardsLeft(this.carddeck.getNumCardsLeft()); //get cards left after initial deal
         showdealerScore();
+        BroadcastMove(this.player);
         gamePlay.isGameOver(); //check to see if the player wins after the initial deal
     },
 
@@ -211,6 +212,7 @@ var blackjack = {
             this.player.userhand.addCard(this.carddeck.dealCard()); //deals player card into their hand object
             showPlayerCard(this.player);//shows the new card on the table
             showCardsLeft(this.carddeck.getNumCardsLeft()); //show new number cards left in deck
+            BroadcastMove(this.player);
             if (blackjack.didPlayerBust()) {
                 gamePlay.outcome = "Lose"
                 addMessage("Player busted! Wait for board to clear to play again!");
@@ -243,6 +245,7 @@ var blackjack = {
         while (this.dealer.getScore() < 17) { //dealer hits until 17
             this.dealer.addCard(this.carddeck.dealCard()); //add the card to dealer's hand object
             showDealerCard(this.dealer, false); //show the card
+            BroadcastMove(this.dealer);
         }
         //Compare scores after the dealer is done dealing
         if(this.dealer.getScore() > 21 || this.player.userhand.getScore() > this.dealer.getScore()) {

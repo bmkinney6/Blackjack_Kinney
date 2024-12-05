@@ -5,7 +5,6 @@
 //mySocket.js
 var myURL = "http://127.0.0.1:3000";
 let username = "User" + Math.floor(Math.random() * 1000);
-showUsername(username);
 
 //connect to socket
 var socket = io(myURL, {secure: true});
@@ -16,12 +15,18 @@ $.ajax({
         socket.emit('emit_from_here');
     }
 });
-//show number of players
+
+socket.on('serverTest', (data) => {
+    console.log(data.message);
+});
+//show number of players example use WORKS DONT  TOUCH
 socket.on('broadcast', function (data) {
-	showNumberOfPlayers(data.description);
+	addMessage("Player Joined!");
+    console.log("player joined.")
 });
-//show button was clicked
-socket.on('clicked', function (data) {
-    showButtonClicked();
+socket.on('scored', function(score){
+    showSocketScore(score.score);
 });
+
+
 

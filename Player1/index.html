@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>UsernamePage</title>
+  <link href="assets/style/cardstyle.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="FormTitle" >Form</div>
+  <form class= "data" action="gameplay.html" id="form">
+    <label for="username">Username (only letters, between 4 and 20 characters): <input type="text" id="username" name="username" pattern="[a-zA-Z]{4,20}" placeholder="John" required></label>
+    <label for="submit"> <input type="submit" id="submit" name="submit"></label>
+  </form>
+  <h2 id="BoardTitle">High Scores</h2>
+  <table id="LeaderBoard">
+    <thead>
+    <tr>
+      <th>Username</th>
+      <th>Score</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+  </table>
+  <script src="/Player1/assets/js/highscores.js" ></script>
+</body>
+</html>

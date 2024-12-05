@@ -192,13 +192,13 @@ var blackjack = {
 
     deal: function() {
         this.player.userhand.addCard(this.carddeck.dealCard()); //add the first card to the player hand
-        showPlayerCard(this.player);//shows the player card on the board
+        showPlayerCard(this.player, 'player1');//shows the player card on the board
         this.dealer.addCard(this.carddeck.dealCard()); //add the first card to the dealer hand
         showDealerCard(this.dealer, false); //second card always dealt face down (will flip later)
         this.dealer.firstcard = this.dealer.cards[1]; //keep track of dealers first card for advice server
         console.log(this.dealer.firstcard);
         this.player.userhand.addCard(this.carddeck.dealCard()); //add the second card to the player hand
-        showPlayerCard(this.player);
+        showPlayerCard(this.player, 'player1');
         this.dealer.addCard(this.carddeck.dealCard()); //add the second card to the dealer hand
         showDealerCard(this.dealer, true); //second card always dealt face down (will flip later)
         showCardsLeft(this.carddeck.getNumCardsLeft()); //get cards left after initial deal
@@ -209,7 +209,7 @@ var blackjack = {
     hit: function() {
         if(this.player.userhand.getScore() < 21) { //if the players score is < 21, allow them to hit
             this.player.userhand.addCard(this.carddeck.dealCard()); //deals player card into their hand object
-            showPlayerCard(this.player);//shows the new card on the table
+            showPlayerCard(this.player, 'player1');//shows the new card on the table
             showCardsLeft(this.carddeck.getNumCardsLeft()); //show new number cards left in deck
             if (blackjack.didPlayerBust()) {
                 gamePlay.outcome = "Lose"

@@ -104,8 +104,8 @@ router.get('/player2', function (req, res) {
     console.log("Received request:", { username, status, wallet });
 
     if (status === 'gameover') {
-        var p1_score = p1_games;
-        p1_games = 0;
+        var p2_score = p2_games;
+        p2_games = 0;
         mydb.findRec({username}, function(err, result) {
             if (err) {
                 // Handle error, e.g., connection failure or other DB issues
@@ -113,7 +113,7 @@ router.get('/player2', function (req, res) {
             } else if (!result) {
                 // If no result is found, add user to the database and set their highscore to their score
                 console.log("Username not found in the database. Adding user now!");
-                mydb.insertRec({username, score: p1_score}, function(err, result) {
+                mydb.insertRec({username, score: p2_score}, function(err, result) {
                     if (err) {
                         res.status(500).json({ message: "Error inserting user", error: err });
                     }
@@ -121,10 +121,10 @@ router.get('/player2', function (req, res) {
                 })
             } else {//compare scores and update score if necessary
                 const currentHighScore = result.score || 0; // Use 0 if no score exists
-                console.log("Current high score:", currentHighScore, "My current score:", p1_score); //display scores in terminal
-                if (p1_score > currentHighScore) {
+                console.log("Current high score:", currentHighScore, "My current score:", p2_score); //display scores in terminal
+                if (p2_score > currentHighScore) {
                     console.log("New high score! Updating...");
-                    mydb.updateData({ username }, { score: p1_score }, function(err, result) {
+                    mydb.updateData({ username }, { score: p2_score }, function(err, result) {
                         if (err) {
                             console.log("error updating data: ", err);
                         }
@@ -140,12 +140,12 @@ router.get('/player2', function (req, res) {
 
     } else {
         // Increment games played count if the game is not over
-        p1_games++;
-        console.log("Incremented games played:", p1_games);
+        p2_games++;
+        console.log("Incremented games played:", p2_games);
     }
 
     // Send response back
-    console.log("Player1 games played:", p1_games);
+    console.log("Player2 games played:", p2_games);
     res.send("Request processed.");
 });
 

@@ -66,6 +66,8 @@ var gamePlay = {
                 showdealerScore();
             }
         }, delayInMilliseconds);
+        let text = "blah"
+        socket.emit('scores', text );
 
     },
     // Method to reset the game

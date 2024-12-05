@@ -146,7 +146,7 @@ function showDealerCard(dealer, facedown) {
 // Show a dealt card for a given player, this will always be faceup so no need for 2nd parameter.
 //I realize the code for the two function are nearly identical, but I could not get it to work when it was together in
 // one function.
-function showPlayerCard(player) {
+function showPlayerCard(player, div) {
     // Retrieve the last dealt card from the player's hand (assuming last added is the latest)
     const lastCard = player.userhand.cards[player.userhand.cards.length - 1];
 
@@ -165,13 +165,24 @@ function showPlayerCard(player) {
     cardDiv.id = cardClass; // Set the ID to match the card's suit and rank, e.g., "H10", "D1"
 
     // Get the player's area to append the card (assuming an element with id 'playerCards' or 'dealerCards' exists)
-    var playerArea = document.getElementById('player1');
+    var playerArea = document.getElementById(div);
 
     // Append the card to the player’s area
     if (playerArea !== null) {
         playerArea.appendChild(cardDiv);
     }
     showScore(); //update score on board
+}
+
+
+function showSocketScore(score) {
+    let scorediv = document.getElementById("socket_score");
+    scorediv.innerHTML= "Score: " + score;
+}
+function updateBoard(player){
+    let player_div = document.getElementById("player_socket");
+    player_div.innerHTML+=player;
+
 }
 
 // Update the bet displayed in the view

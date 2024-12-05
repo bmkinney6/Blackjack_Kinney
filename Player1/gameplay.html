@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Blackjack I</title>
+        <link href="assets/style/cardstyle.css" rel="stylesheet" type="text/css"/>
+        <script
+                src="https://code.jquery.com/jquery-3.7.1.js"
+                integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+                crossorigin="anonymous"></script>
+    </head>
+    <body class="gameplay">
+        <div class="left_board">
+            <div class="money_container">
+                <div class="usernameDiv" id="usernameDiv"></div>
+                <p class="player_money" id="player_money">Money: </p>
+                <p class="BetAmount" id="BetAmount">Bet amount: </p>
+                <p class="betIncrement" id="betIncrement">+</p>
+                <p class="betDecrement" id="betDecrement">-</p>
+                <p class="dealButton" id="dealButton">Deal</p>
+            </div>
+            <div class = "socketBoard" id="socketBoard">
+                <div class="Dealer_mat_socket" id="dealer_socket"></div>
+                <p class="player_mat_text" id="socket_score">Score: </p>
+                <div class="player_mat_socket" id="player_socket"></div>
+            </div>
+        </div>
+        <div class="middle_board">
+            <div class="dealer_mat_text" id="dealer_mat_text">Dealer</div>
+            <div class="Dealer_mat" id="Dealer_mat"></div>
+            <p class="title">Blackjack</p>
+            <p class="description">Dealer must stand on 17, draw to 16.</p>
+            <div class="player_mat_container">
+                <p class="player_mat_text" id="playerscore">Player 1</p>
+                <div class="player_mat" id="player1"></div>
+            </div>
+            <div class="button_container">
+                <p class="button_font" id="hitButton">Hit</p>
+                <p class="button_font" id="stayButton">Stay</p>
+            </div>
+        </div>
+        <div class="right_board">
+            <div class="card_deck dealer" id="facedowncard"></div>
+            <div class="cards_left" id="cards_left">Cards left: </div>
+            <div class="cards_left" id="discard_pile">Discard pile: </div>
+            <div class="messagediv" id="messagediv"></div>
+            <p class="resetButton" id="reset">Reset</p>
+        </div>
+        <script src="http://127.0.0.1:3000/socket.io/socket.io.js" type="text/javascript"></script>
+        <script src="/Player1/assets/js/models.js" type="text/javascript"></script>
+        <script src="/Player1/assets/js/view.js" type="text/javascript"></script>
+        <script src="/Player1/assets/js/listeners.js" type="text/javascript"></script>
+        <script src="/Player1/assets/js/app.js" type="text/javascript"></script>
+        <script src="/Player1/assets/js/mySocket.js" type="text/javascript"></script>
+    </body>
+</html>
+
+

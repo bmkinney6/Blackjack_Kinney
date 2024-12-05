@@ -3,10 +3,10 @@
 var express = require('express');
 var routes = require('./routes.js');
 const cors = require('cors');
-const io = require("socket.io")(http, {cors: {origin: "*", methods: ["GET", "POST"]}});
 const bodyParser = require('body-parser');
 const app = express();
 var http = require('http').Server(app);
+const io = require("socket.io")(http, {cors: {origin: "*", methods: ["GET", "POST"]}});
 const port = 3000;
 
 //Get access to request body for POST requests
@@ -23,19 +23,21 @@ var users = 0;
 io.on('connection', function (socket) {
     //increment number of users
     users++;
-    //broadcast number of users when users connect
-    io.sockets.emit('broadcast', {description: users + ' users are here!'});
-    //listen for and broadcast clicks
-    socket.on('clicks', function(clicks){
-        console.log("clicked "+clicks+" times");
-        io.sockets.emit('clicked', {data: clicks});
+    console.log("New User!")
+
+
+
+    socket.on('scores', function(score){
+        console.log("New Score: ", score);
+        io.sockets.emit('scored', {score: score});
     });
     //broadcast number of users when users disconnect
     socket.on('disconnect', function () {
         users--;
         io.sockets.emit('broadcast', {description: users + ' users  are here!'});
+        console.log("User left.");
     });
 });
 
 //Listen for connections on port 3000
-app.listen(port, () => console.log("Server running on port: "+port));
+http.listen(port, () => console.log("Server running on port: "+port));

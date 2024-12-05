@@ -16,12 +16,28 @@ $.ajax({
         socket.emit('emit_from_here');
     }
 });
-//show number of players
+//show number of players example use
 socket.on('broadcast', function (data) {
-	showNumberOfPlayers(data.description);
+    showNumberOfPlayers(data.description);
 });
-//show button was clicked
+//show button was clicked example use
 socket.on('clicked', function (data) {
     showButtonClicked();
 });
+
+// Emit player moves
+function BroadcastMove(playerMove) {
+    socket.emit('playerMove', playerMove);
+}
+
+// Listen for board updates
+socket.on('updateBoard', (data) => {
+    updateMiniBoard(data);
+});
+
+function updateMiniBoard(data) {
+    // Update the mini board with the other player's data
+    BroadcastPlayerCard(data);
+}
+
 

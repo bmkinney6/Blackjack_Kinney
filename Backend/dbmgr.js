@@ -98,6 +98,12 @@ exports.findAll = function (limit,callbackFn) {
                     console.log("Results");
                     console.log(results);
                     db.close();
+
+
+
+
+
+
                     callbackFn(null, results);
                 })
         })
