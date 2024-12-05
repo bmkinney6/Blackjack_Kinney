@@ -1,5 +1,5 @@
-//Author: Nnamdi Nwanze
-//Description: This database manager demonstrates the use of database operations including creating/deleting collections and inserting, searching and updating entries.
+//Author: Brad Kinney
+//Description: operations for DB
 const config = require('./config.json');
 
 const mycollection = config.mycollection;

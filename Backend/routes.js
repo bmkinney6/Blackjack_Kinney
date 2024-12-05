@@ -162,23 +162,6 @@ router.get('/highscores', function (req, res) {
 });
 
 
-//Demo / route to print hello
-router.get('/', function (req, res) {
-    res.send("Hello a is " + a + ", b  is " + b);
-});
-
-//Demo / route to print hello
-// router.post('/username', function (req, res) {
-//     console.log(req.body);
-//     res.send("Hello a is " + a + ", b  is " + b);
-// });
-//
-// //Demo / route to print hello
-// router.get('/username', function (req, res) {
-//     let myURL = url.parse(req.url, true);
-//     console.log(myURL);
-//     res.send("Hello we're using a get");
-// });
 
 //Demo /p1 route to insert record into the database
 router.get('/p1', function (req, res) {
