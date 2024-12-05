@@ -146,7 +146,7 @@ function showDealerCard(dealer, facedown) {
 // Show a dealt card for a given player, this will always be faceup so no need for 2nd parameter.
 //I realize the code for the two function are nearly identical, but I could not get it to work when it was together in
 // one function.
-function showPlayerCard(player) {
+function showPlayerCard(player, div) {
     // Retrieve the last dealt card from the player's hand (assuming last added is the latest)
     const lastCard = player.userhand.cards[player.userhand.cards.length - 1];
 
@@ -165,7 +165,7 @@ function showPlayerCard(player) {
     cardDiv.id = cardClass; // Set the ID to match the card's suit and rank, e.g., "H10", "D1"
 
     // Get the player's area to append the card (assuming an element with id 'playerCards' or 'dealerCards' exists)
-    var playerArea = document.getElementById('player1');
+    var playerArea = document.getElementById(div);
 
     // Append the card to the player’s area
     if (playerArea !== null) {
@@ -174,19 +174,8 @@ function showPlayerCard(player) {
     showScore(); //update score on board
 }
 
-function BroadcastPlayerCard(player) {
-    // Retrieve the last dealt card from the player's hand (assuming last added is the latest)
-    const lastCard = player.userhand.cards[player.userhand.cards.length - 1];
-
-    // Check if lastCard is valid
-    if (!lastCard) {
-        console.error('No card found in user hand.');
-        return;
-    }
-
-    // reference using suit and rank
-    let cardClass = lastCard.suit + lastCard.rank;
-
+function playersocketcard(card) {
+    let cardClass = card.suit + card.rank;
     // Create a new div to represent the dealt card
     var cardDiv = document.createElement('div');
     cardDiv.classList.add('card_deck'); // Generic class for styling cards
@@ -199,7 +188,31 @@ function BroadcastPlayerCard(player) {
     if (playerArea !== null) {
         playerArea.appendChild(cardDiv);
     }
-    showScore(); //update score on board
+}
+
+function dealersocketcard(card) {
+    let cardClass = card.suit + card.rank;
+    // Create a new div to represent the dealt card
+    var cardDiv = document.createElement('div');
+    cardDiv.classList.add('card_deck'); // Generic class for styling cards
+    cardDiv.id = cardClass; // Set the ID to match the card's suit and rank, e.g., "H10", "D1"
+
+    // Get the player's area to append the card (assuming an element with id 'playerCards' or 'dealerCards' exists)
+    var playerArea = document.getElementById('dealer_socket');
+
+    // Append the card to the player’s area
+    if (playerArea !== null) {
+        playerArea.appendChild(cardDiv);
+    }
+}
+function showSocketScore(score) {
+    let scorediv = document.getElementById("socket_score");
+    scorediv.innerHTML= "Score: " + score;
+}
+function updateBoard(player){
+    let player_div = document.getElementById("player_socket");
+    player_div.innerHTML+=player;
+
 }
 
 // Update the bet displayed in the view

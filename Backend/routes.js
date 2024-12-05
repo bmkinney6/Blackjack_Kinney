@@ -33,7 +33,7 @@ router.post('/username', function (req, res) {
             res.json({ message: "User found", data: result });
         } else {
             // If no user found, insert a new user record
-            mydb.insertRec({ username: req.body.username }, function(err, result) {
+            mydb.insertRec({ username: req.body.username, score: 0 }, function(err, result) {
                 if (err) {
                     // Handle insertion error
                     console.log("Error inserting user.")

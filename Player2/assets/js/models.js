@@ -103,6 +103,7 @@ var hand = {
     addCard: function(card) {
         this.cards.push(card); //adds the card to the hand of the player
         this.setScore(card.getValue()); //add the score of the card
+        //socket.emit('player_move', card);//broadcast everytime a player adds a card.
     },
 
     //setscore uses some of Prof. Nwanze's code
@@ -119,6 +120,10 @@ var hand = {
 
     getScore: function() {
         return this.aceHighScore>this.score? this.aceHighScore:this.score;
+    },
+
+    getLastCard: function(){
+        return this.cards[this.cards.length -1]
     },
 
     reset: function() {
@@ -175,6 +180,7 @@ var user = {
     initialize: function () {
         this.userWallet.setValue(1000); //initialize the users wallet to 1000
     }
+
 };
 
 //blackjack game model
@@ -192,27 +198,30 @@ var blackjack = {
 
     deal: function() {
         this.player.userhand.addCard(this.carddeck.dealCard()); //add the first card to the player hand
-        showPlayerCard(this.player);//shows the player card on the board
+        socket.emit('player_move', this.player.userhand.getLastCard());
+        showPlayerCard(this.player, 'player1');//shows the player card on the board
         this.dealer.addCard(this.carddeck.dealCard()); //add the first card to the dealer hand
+        socket.emit('dealer_move', this.dealer.getLastCard());
         showDealerCard(this.dealer, false); //second card always dealt face down (will flip later)
         this.dealer.firstcard = this.dealer.cards[1]; //keep track of dealers first card for advice server
         console.log(this.dealer.firstcard);
         this.player.userhand.addCard(this.carddeck.dealCard()); //add the second card to the player hand
-        showPlayerCard(this.player);
+        socket.emit('player_move', this.player.userhand.getLastCard());//broadcast players last card
+        showPlayerCard(this.player, 'player1');
         this.dealer.addCard(this.carddeck.dealCard()); //add the second card to the dealer hand
+        socket.emit('dealer_move', this.dealer.getLastCard());
         showDealerCard(this.dealer, true); //second card always dealt face down (will flip later)
         showCardsLeft(this.carddeck.getNumCardsLeft()); //get cards left after initial deal
         showdealerScore();
-        BroadcastMove(this.player);
         gamePlay.isGameOver(); //check to see if the player wins after the initial deal
     },
 
     hit: function() {
         if(this.player.userhand.getScore() < 21) { //if the players score is < 21, allow them to hit
             this.player.userhand.addCard(this.carddeck.dealCard()); //deals player card into their hand object
-            showPlayerCard(this.player);//shows the new card on the table
+            showPlayerCard(this.player, 'player1');//shows the new card on the table
+            socket.emit('player_move', this.player.userhand.getLastCard());//broadcast the move
             showCardsLeft(this.carddeck.getNumCardsLeft()); //show new number cards left in deck
-            BroadcastMove(this.player);
             if (blackjack.didPlayerBust()) {
                 gamePlay.outcome = "Lose"
                 addMessage("Player busted! Wait for board to clear to play again!");
@@ -244,8 +253,8 @@ var blackjack = {
         showDealerCard(this.dealer, false); //flip the second card that was initially dealt
         while (this.dealer.getScore() < 17) { //dealer hits until 17
             this.dealer.addCard(this.carddeck.dealCard()); //add the card to dealer's hand object
+            socket.emit('dealer_move', this.dealer.getLastCard());
             showDealerCard(this.dealer, false); //show the card
-            BroadcastMove(this.dealer);
         }
         //Compare scores after the dealer is done dealing
         if(this.dealer.getScore() > 21 || this.player.userhand.getScore() > this.dealer.getScore()) {

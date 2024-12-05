@@ -8,6 +8,7 @@ let username = "User" + Math.floor(Math.random() * 1000);
 
 //connect to socket
 var socket = io(myURL, {secure: true});
+
 $.ajax({
     url: myURL,
     type: 'GET',
@@ -15,6 +16,7 @@ $.ajax({
         socket.emit('emit_from_here');
     }
 });
+
 
 socket.on('serverTest', (data) => {
     console.log(data.message);
@@ -28,5 +30,13 @@ socket.on('scored', function(score){
     showSocketScore(score.score);
 });
 
+socket.on('player_moved', function(card){
+    console.log("player 1 moved!");
+    playersocketcard(card.card);
+});
+socket.on('dealer_moved', function(card){
+    console.log("dealer 1 moved!");
+    dealersocketcard(card.card);
+});
 
 

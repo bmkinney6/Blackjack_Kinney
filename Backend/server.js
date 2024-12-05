@@ -25,7 +25,14 @@ io.on('connection', function (socket) {
     users++;
     console.log("New User!")
 
-
+    socket.on('player_move', function(card){
+        console.log("New move updating board with new card!");
+        io.sockets.emit('player_moved', {card: card});
+    });
+    socket.on('dealer_move', function(card){
+        console.log("New move updating board with new card!");
+        io.sockets.emit('dealer_moved', {card: card});
+    });
 
     socket.on('scores', function(score){
         console.log("New Score: ", score);
@@ -41,3 +48,4 @@ io.on('connection', function (socket) {
 
 //Listen for connections on port 3000
 http.listen(port, () => console.log("Server running on port: "+port));
+

@@ -27,9 +27,15 @@ html, body {
     width: 150px;
     border: 1px solid #666;
     border-radius: 8px;
+    max-width: 100%;
+    max-height: 100%;
+    height: auto; /* Maintain aspect ratio */
+    width: auto;  /* Maintain aspect ratio */
     /*background-size: auto 100%; !* Scale the sprite sheet to fit 20vh *!*/
     /*background-repeat: no-repeat;*/
+    object-fit: contain
 }
+
 
 
 /* General Table Styling */
@@ -148,6 +154,40 @@ input {
     margin: 10px auto 0 auto;
     font-size: 16px;
 }
+.card_deck {
+    background: url("../img/carddeck.png");
+    border: 1px solid #666;
+    border-radius: 8px;
+    max-width: 100%;   /* Scale down if the container is smaller */
+    max-height: 100%;  /* Scale down if the container is smaller */
+    object-fit: contain; /* Ensure the image fits without distortion */
+}
+
+.player_mat_socket {
+    display: flex;              /* Enable flexible alignment */
+    justify-content: center;    /* Center images horizontally */
+    align-items: center;        /* Center images vertically */
+    height: 217px;              /* Fixed height for container */
+    width: 100%;                /* Full width */
+    background-color: #669bbc;
+    border: 4px solid white;
+    border-radius: 8px;
+    overflow: hidden;           /* Ensure images don't overflow the container */
+}
+.player_mat_socket, .Dealer_mat_socket {
+    height: 30%;
+    width: 90%;
+    margin: 30px auto;
+    border-width: 2px;
+}
+
+.container img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain; /* Ensures the image fits inside the container */
+}
 
 /*
 ------------------------------------------- MIDDLE BOARD ELEMENT STYLING --------------------
@@ -188,7 +228,7 @@ input {
     height: 28%;
 }
 
-.player_mat, .player_mat_socket {
+.player_mat {
     display: flex;
     justify-content: center;
     height: 217px;

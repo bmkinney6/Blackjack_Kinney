@@ -5,7 +5,6 @@
 //mySocket.js
 var myURL = "http://127.0.0.1:3000";
 let username = "User" + Math.floor(Math.random() * 1000);
-showUsername(username);
 
 //connect to socket
 var socket = io(myURL, {secure: true});
@@ -16,28 +15,26 @@ $.ajax({
         socket.emit('emit_from_here');
     }
 });
-//show number of players example use
+
+socket.on('serverTest', (data) => {
+    console.log(data.message);
+});
+//show number of players example use WORKS DONT  TOUCH
 socket.on('broadcast', function (data) {
-    showNumberOfPlayers(data.description);
+	addMessage("Player Joined!");
+    console.log("player joined.")
 });
-//show button was clicked example use
-socket.on('clicked', function (data) {
-    showButtonClicked();
-});
-
-// Emit player moves
-function BroadcastMove(playerMove) {
-    socket.emit('playerMove', playerMove);
-}
-
-// Listen for board updates
-socket.on('updateBoard', (data) => {
-    updateMiniBoard(data);
+socket.on('scored', function(score){
+    showSocketScore(score.score);
 });
 
-function updateMiniBoard(data) {
-    // Update the mini board with the other player's data
-    BroadcastPlayerCard(data);
-}
+socket.on('player_moved', function(card){
+    console.log("player 1 moved!");
+    playersocketcard(card.card);
+});
+socket.on('dealer_moved', function(card){
+    console.log("dealer 1 moved!");
+    dealersocketcard(card.card);
+});
 
 
